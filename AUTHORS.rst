@@ -2,9 +2,11 @@
 Credits
 =======
 
-Development Lead
-----------------
+Development
+-----------
 
+* tomasgarzon <https://github.com/tomasgarzon>
+* jsujar <https://github.com/jsujar>
 * marfyl <https://github.com/marfyl>
 
 Contributors

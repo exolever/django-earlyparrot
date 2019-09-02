@@ -13,7 +13,7 @@ Types of Contributions
 Report Bugs
 ~~~~~~~~~~~
 
-Report bugs at https://github.com/marfyl/exolever/django-earlyparrot/issues.
+Report bugs at https://github.com/exolever/django-earlyparrot/issues.
 
 If you are reporting a bug, please include:
 
