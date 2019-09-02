@@ -24,7 +24,7 @@ django-earlyparrot
 .. image:: https://img.shields.io/badge/License-MIT-green.svg
    :target: https://opensource.org/licenses/MIT
 
-Use typeform as feedback with Django
+Use EarlyParrot with Django webhooks and signals
 
 Quickstart
 ----------
