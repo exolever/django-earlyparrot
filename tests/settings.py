@@ -9,26 +9,14 @@ USE_TZ = True
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "3d#8x9iy+b#1f1g&12^6lf&u*mzqik$d_1m0-i^x2jg(y6pi#*"
 
-if 'TRAVIS' in os.environ:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "travis_ci_test",
-            "USER": "postgres",
-            "PASSWORD": "",
-        }
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME", "travis_ci_test"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASS", ""),
     }
-else:
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": "local_ci_test",
-            "USER": "exolever",
-            "PASSWORD": "exolever",
-            "HOST": "localhost",
-            "PORT": "5432",
-        }
-    }
+}
 
 ROOT_URLCONF = "tests.urls"
 
