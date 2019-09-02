@@ -11,7 +11,6 @@ class CampaignViewSet(ListAPIView):
 
     model = Campaign
     queryset = Campaign.objects.filter(status=settings.REFERRAL_CAMPAIGN_STATUS_ACTIVE)
-    # authentication_classes = (SessionAuthentication, BasicAuthentication, TokenAuthentication)
     permission_classes = (IsAuthenticated, )
     serializer_class = CampaignSerializer
 
