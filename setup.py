@@ -37,7 +37,6 @@ setup(
         'django-model-utils',
         'psycopg2',
         'djangorestframework',
-        'djangorestframework-jwt',
     ],
     license="MIT",
     zip_safe=False,
