@@ -46,6 +46,7 @@ class ReferralTest(APITestCase):
         response_data = response.json()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response_data), 2)
+        print(response.data)
 
     def test_user_without_campaigns_get_no_campaigns(self):
         # PREPARE DATA
