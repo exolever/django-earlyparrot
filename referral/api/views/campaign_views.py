@@ -14,9 +14,6 @@ class CampaignViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
-
-    model = Campaign
-    queryset = Campaign.objects.filter(status=settings.REFERRAL_CAMPAIGN_STATUS_ACTIVE)
     permission_classes = (IsAuthenticated, )
     lookup_field = 'campaign_id'
     lookup_url_kwarg = 'campaign_id'
@@ -33,8 +30,13 @@ class CampaignViewSet(
             self.serializers['default'],
         )
 
-    def filter_queryset(self, queryset):
-        return queryset.filter(users__email=self.request.user.email)
+    def get_queryset(self):
+        queryset = Campaign.objects.filter(status=settings.REFERRAL_CAMPAIGN_STATUS_ACTIVE)
+
+        if self.action == 'list':
+            queryset = queryset.filter(users__email=self.request.user.email)
+
+        return queryset
 
     @action(methods=['post'], detail=True, url_path='subscribe')
     def subscribe(self, request, campaign_id):
