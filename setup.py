@@ -37,6 +37,8 @@ setup(
         'django-model-utils',
         'psycopg2',
         'djangorestframework',
+        'celery',
+        'redis',
     ],
     license="MIT",
     zip_safe=False,

@@ -2,6 +2,8 @@ from django.conf import settings
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
+from unittest.mock import patch
+
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -93,3 +95,23 @@ class ReferralTest(APITestCase):
 
         # DO ASSERTS
         self.assertTrue(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    @patch('referral.tasks.CampaignSubscribeTask.apply_async')
+    def test_retrieve_user_campaign_and_subscribe(self, patch_mock):
+        # PREPARE DATA
+        campaign_1 = FakeCampaignFactory.create()
+        self.user.referrals.add(campaign_1)
+
+        url = reverse('referral:campaign-subscribe', kwargs={'campaign_id': campaign_1.campaign_id})
+        self._do_login(self.user)
+
+        # DO ACTION
+        data = {
+            'rh': 'XXXYYY',
+            'conversion': False,
+        }
+        response = self.client.post(url, data=data)
+
+        # DO ASSERTS
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(patch_mock.called)
