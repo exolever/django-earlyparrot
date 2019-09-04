@@ -13,9 +13,8 @@ DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": os.environ.get("DB_NAME", "travis_ci_test"),
-        "USER": os.environ.get("DB_USER", "exolever"),
-        "PASSWORD": os.environ.get("DB_PASS", "exolever"),
-        "HOST": "localhost",
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASS", ""),
     }
 }
 
