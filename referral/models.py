@@ -1,6 +1,7 @@
 from django.db import models
 
 from .conf import settings
+from .tasks import CampaignSubscribeTask
 
 
 class Campaign(models.Model):
@@ -25,3 +26,17 @@ class Campaign(models.Model):
     @property
     def total_users(self):
         return self.users.count()
+
+    def subscribe(self, user_from, rh, conversion):
+        data = {
+            'campaign_id': self.campaign_id,
+            'firstName': user_from.first_name,
+            'lastName': user_from.last_name,
+            'email': user_from.email,
+            'rh': rh,
+        }
+
+        if conversion:
+            data['conversionName'] = settings.REFERRAL_CONVERSION_NAME
+
+        CampaignSubscribeTask().s(**data).apply_async()

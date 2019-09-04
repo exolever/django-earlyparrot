@@ -2,6 +2,8 @@ from django.conf import settings
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
+from unittest.mock import patch
+
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -15,6 +17,8 @@ class ReferralTest(APITestCase):
         self.user = get_user_model().objects.create(
             username=faker.user_name(),
             email=faker.email(),
+            first_name=faker.first_name(),
+            last_name=faker.last_name(),
             is_superuser=False,
             is_active=True)
         self.user.set_password(password)
@@ -93,3 +97,31 @@ class ReferralTest(APITestCase):
 
         # DO ASSERTS
         self.assertTrue(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    @patch('referral.tasks.CampaignSubscribeTask.apply_async')
+    def test_retrieve_user_campaign_and_subscribe(self, patch_task):
+        # PREPARE DATA
+        campaign_1 = FakeCampaignFactory.create()
+        self.user.referrals.add(campaign_1)
+
+        url = reverse('referral:campaign-subscribe', kwargs={'campaign_id': campaign_1.campaign_id})
+        self._do_login(self.user)
+
+        # DO ACTION
+        data = {
+            'rh': 'XXXYYY',
+            'conversion': True,
+        }
+        response = self.client.post(url, data=data)
+
+        # DO ASSERTS
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(patch_task.called)
+
+        (_, task_kwargs), _ = patch_task.call_args
+        self.assertEqual(task_kwargs.get('campaign_id'), campaign_1.campaign_id)
+        self.assertEqual(task_kwargs.get('email'), self.user.email)
+        self.assertEqual(task_kwargs.get('firstName'), self.user.first_name)
+        self.assertEqual(task_kwargs.get('lastName'), self.user.last_name)
+        self.assertEqual(task_kwargs.get('rh'), data['rh'])
+        self.assertEqual(task_kwargs.get('conversionName'), settings.REFERRAL_CONVERSION_NAME)

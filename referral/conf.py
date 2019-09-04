@@ -21,3 +21,5 @@ class ReferralConfig(AppConf):
 
     # Webhooks type names
     NEW_REWARD_AWARED = 'NewReward'
+
+    CONVERSION_NAME = 'SIGNUP_COMPLETED'

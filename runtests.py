@@ -9,12 +9,20 @@ import django
 from django.conf import settings
 from django.test.utils import get_runner
 
+from celery import Celery
+
 
 def run_tests(*test_args):
     if not test_args:
         test_args = ['tests']
 
     os.environ['DJANGO_SETTINGS_MODULE'] = 'tests.settings'
+
+    app = Celery('referral')
+    app.config_from_object('django.conf:settings', namespace='CELERY')
+    app.autodiscover_tasks()
+    app.conf.update(BROKER_URL='redis://localhost:6379/0')
+
     django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner()
