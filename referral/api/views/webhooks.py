@@ -22,11 +22,11 @@ class RewardAPIView(APIView):
 
         try:
             campaign = Campaign.objects.get(campaign_id=webhook_data.get('campaignId'))
-            user = campaign.users.get(email=webhook_data.get('email'))
+            user_from = campaign.users.get(email=webhook_data.get('email'))
 
             referral_reward_acquired.send(
-                sender=campaign,
-                user=user,
+                sender=campaign.__class__,
+                user_from=user_from,
                 reward_data=webhook_data,
             )
             status_code = status.HTTP_200_OK
