@@ -20,9 +20,12 @@ class RewardAPIView(APIView):
         status_code = status.HTTP_404_NOT_FOUND
         webhook_data = request.data
 
+        campaign_id = webhook_data.get('campaignId')
+        email = webhook_data.get('email')
+
         try:
-            campaign = Campaign.objects.get(campaign_id=webhook_data.get('campaignId'))
-            user_from = campaign.users.get(email=webhook_data.get('email'))
+            campaign = Campaign.objects.get(campaign_id=campaign_id)
+            user_from = campaign.users.get(email=email)
 
             referral_reward_acquired.send(
                 sender=campaign.__class__,
@@ -30,12 +33,14 @@ class RewardAPIView(APIView):
                 reward_data=webhook_data,
             )
             status_code = status.HTTP_200_OK
-            logger.info('RewardAPIView OK')
+            logger.info('RewardAPIView OK: {}-{}'.format(campaign_id, email))
 
         except Campaign.DoesNotExist:
-            logger.error('Campaign.DoesNotExist')
+            logger.error('Campaign.DoesNotExist: {}-{}'.format(campaign_id, email))
 
         except get_user_model().DoesNotExist:
-            logger.error('User.DoesNotExist')
+            logger.error('User.DoesNotExist: {}-{}'.format(campaign_id, email))
+        except Exception as exc:
+            logger.error('RewardAPIView.Exception: {}'.format(exc))
 
         return HttpResponse(status=status_code)
