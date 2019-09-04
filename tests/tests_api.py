@@ -99,7 +99,7 @@ class ReferralTest(APITestCase):
         self.assertTrue(response.status_code, status.HTTP_403_FORBIDDEN)
 
     @patch('referral.tasks.CampaignSubscribeTask.apply_async')
-    def test_retrieve_user_campaign_and_subscribe(self, patch_task):
+    def test_campaign_subscribe_with_conversion(self, patch_task):
         # PREPARE DATA
         campaign_1 = FakeCampaignFactory.create()
         self.user.referrals.add(campaign_1)
@@ -125,3 +125,30 @@ class ReferralTest(APITestCase):
         self.assertEqual(task_kwargs.get('lastName'), self.user.last_name)
         self.assertEqual(task_kwargs.get('rh'), data['rh'])
         self.assertEqual(task_kwargs.get('conversionName'), settings.REFERRAL_CONVERSION_NAME)
+
+    @patch('referral.tasks.CampaignSubscribeTask.apply_async')
+    def test_campaign_subscribe_without_conversion(self, patch_task):
+        # PREPARE DATA
+        campaign_1 = FakeCampaignFactory.create()
+        self.user.referrals.add(campaign_1)
+
+        url = reverse('referral:campaign-subscribe', kwargs={'campaign_id': campaign_1.campaign_id})
+        self._do_login(self.user)
+
+        # DO ACTION
+        data = {
+            'rh': 'XXXYYY',
+        }
+        response = self.client.post(url, data=data)
+
+        # DO ASSERTS
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTrue(patch_task.called)
+
+        (_, task_kwargs), _ = patch_task.call_args
+        self.assertEqual(task_kwargs.get('campaign_id'), campaign_1.campaign_id)
+        self.assertEqual(task_kwargs.get('email'), self.user.email)
+        self.assertEqual(task_kwargs.get('firstName'), self.user.first_name)
+        self.assertEqual(task_kwargs.get('lastName'), self.user.last_name)
+        self.assertEqual(task_kwargs.get('rh'), data['rh'])
+        self.assertIsNone(task_kwargs.get('conversionName'))
