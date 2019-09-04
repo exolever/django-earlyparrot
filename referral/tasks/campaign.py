@@ -28,6 +28,6 @@ class CampaignSubscribeTask(Task):
             data['conversionName'] = kwargs.get('conversionName')
 
         try:
-            requests.post(url, data=data, format='json')
+            requests.post(url, data=data)
         except Exception as exc:
             logger.error('CampaignSubscribeTask.Exception: {}'.format(exc))
