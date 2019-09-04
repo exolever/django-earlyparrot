@@ -37,6 +37,6 @@ class Campaign(models.Model):
         }
 
         if conversion:
-            data['conversionName'] = 'SIGNUP_COMPLETED'
+            data['conversionName'] = settings.REFERRAL_CONVERSION_NAME
 
         CampaignSubscribeTask().s(**data).apply_async()
