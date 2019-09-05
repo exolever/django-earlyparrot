@@ -4,31 +4,19 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 
+from ...helpers import normalize_email
 from ...models import Campaign
 
 logger = logging.getLogger('referral')
 
 
 class Command(BaseCommand):
-    help = ('Add an user to a campaign')
+    help = ('Add users to a campaign')
     missing_args_message = 'You must provide a campaign ID and CSV file path.'
 
     def add_arguments(self, parser):
         parser.add_argument('-c', '--campaign', nargs='+', type=str)
         parser.add_argument('-f', '--file', nargs='+', type=str)
-
-    def _normalize_email(self, email):
-        """
-        Normalize the email address by lowercasing the domain/email name part of it.
-        """
-        email = email or ''
-        try:
-            email_name, domain_part = email.strip().rsplit('@', 1)
-        except ValueError:
-            pass
-        else:
-            email = '@'.join([email_name.lower(), domain_part.lower()])
-        return email
 
     def _read_emails_from_path(self, filepath):
         emails = []
@@ -49,7 +37,7 @@ class Command(BaseCommand):
             emails = self._read_emails_from_path(filepath)
 
             for email in emails:
-                email = self._normalize_email(email)
+                email = normalize_email(email)
 
                 try:
                     user = get_user_model().objects.get(email=email)
