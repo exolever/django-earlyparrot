@@ -3,7 +3,6 @@ import logging
 
 from celery import Task
 
-
 logger = logging.getLogger('referral')
 
 
@@ -17,8 +16,6 @@ class CampaignSubscribeTask(Task):
         rh = kwargs.get('rh')
         url = 'https://admin.earlyparrot.com/api/campaigns/{}/subscribe'.format(campaign_id)
 
-        logger.info('CampaignSubscribeTask: {}-{}-{}'.format(campaign_id, email, rh))
-
         data = {
             'firstName': kwargs.get('firstName'),
             'lastName': kwargs.get('lastName'),
@@ -31,6 +28,7 @@ class CampaignSubscribeTask(Task):
 
         try:
             requests.post(url, data=data)
+            logger.info('CampaignSubscribeTask: {}-{}-{}'.format(campaign_id, email, rh))
         except Exception as exc:
             logger.error('CampaignSubscribeTask.Exception: {}-{}-{}'.format(campaign_id, email, rh))
             logger.error('CampaignSubscribeTask.Exception: {}'.format(exc))
