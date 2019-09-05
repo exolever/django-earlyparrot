@@ -8,7 +8,7 @@ from .helpers import create_users_from_csv
 
 class CommandsTestCase(TestCase):
 
-    def test_add_users_to_campaigns(self):
+    def test_command_add_users_to_campaign(self):
         # PREPARE DATA
         campaign = FakeCampaignFactory.create()
         filepath = './tests/campaign_users.csv'
