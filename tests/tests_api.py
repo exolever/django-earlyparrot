@@ -129,10 +129,10 @@ class ReferralTest(APITestCase):
     @patch('referral.tasks.CampaignSubscribeTask.apply_async')
     def test_campaign_subscribe_without_conversion(self, patch_task):
         # PREPARE DATA
-        campaign_1 = FakeCampaignFactory.create()
-        self.user.referrals.add(campaign_1)
+        campaign = FakeCampaignFactory.create()
+        self.user.referrals.add(campaign)
 
-        url = reverse('referral:campaign-subscribe', kwargs={'campaign_id': campaign_1.campaign_id})
+        url = reverse('referral:campaign-subscribe', kwargs={'campaign_id': campaign.campaign_id})
         self._do_login(self.user)
 
         # DO ACTION
@@ -146,7 +146,7 @@ class ReferralTest(APITestCase):
         self.assertTrue(patch_task.called)
 
         (_, task_kwargs), _ = patch_task.call_args
-        self.assertEqual(task_kwargs.get('campaign_id'), campaign_1.campaign_id)
+        self.assertEqual(task_kwargs.get('campaign_id'), campaign.campaign_id)
         self.assertEqual(task_kwargs.get('email'), self.user.email)
         self.assertEqual(task_kwargs.get('firstName'), self.user.first_name)
         self.assertEqual(task_kwargs.get('lastName'), self.user.last_name)
