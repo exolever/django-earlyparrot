@@ -35,12 +35,13 @@ class TestReferralWebhooks(APITestCase):
             'webHookType': 'NewReward'
         }
 
+    @patch('referral.tasks.subscriber.SubscriberGetTokenTask.apply_async')
     @patch('referral.signals_define.referral_reward_acquired.send')
-    def test_referral_webhook_received_launch_signal(self, mock_signal_reward):
+    def test_referral_webhook_received_launch_signal(self, mock_signal_reward, patch_task):
         # PREPARE DATA
         campaign = FakeCampaignFactory()
         user = self._create_user()
-        user.referrals.add(campaign)
+        campaign.add_subscriber(user)
         data = self._get_referral_webhook_payload(
             campaign_id=campaign.campaign_id,
             email=user.email,

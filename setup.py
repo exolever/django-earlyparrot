@@ -39,6 +39,7 @@ setup(
         'djangorestframework',
         'celery',
         'redis',
+        'requests',
     ],
     license="MIT",
     zip_safe=False,
