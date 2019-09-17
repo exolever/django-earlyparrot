@@ -35,7 +35,7 @@ setup(
     install_requires=[
         'django-appconf',
         'django-model-utils',
-        'psycopg2',
+        'psycopg2-binary',
         'djangorestframework',
         'celery',
         'redis',
