@@ -41,7 +41,7 @@ class Command(BaseCommand):
 
                 try:
                     user = get_user_model().objects.get(email=email)
-                    campaign.users.add(user)
+                    campaign.add_subscriber(user)
                     logger.info('User {} added to campaign {}'.format(email, campaign_id))
                 except ObjectDoesNotExist:
                     logger.error('User {} DoesNotExist'.format(email))

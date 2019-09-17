@@ -5,6 +5,6 @@ class ReferralConfig(AppConfig):
     name = 'referral'
     verbose_name = 'Referral'
 
-    # def ready(self):
-    # from .signals import setup_signals
-    # setup_signals()
+    def ready(self):
+        from .signals import setup_signals
+        setup_signals()

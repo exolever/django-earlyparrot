@@ -11,3 +11,5 @@ docs/_build/
 .eggs/
 *.log
 *.rdb
+
+*.sublime-*

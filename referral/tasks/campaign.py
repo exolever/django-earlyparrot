@@ -1,6 +1,8 @@
 import requests
 import logging
 
+from django.conf import settings
+
 from celery import Task
 
 logger = logging.getLogger('referral')
@@ -14,7 +16,7 @@ class CampaignSubscribeTask(Task):
         campaign_id = kwargs.get('campaign_id')
         email = kwargs.get('email')
         rh = kwargs.get('rh')
-        url = 'https://admin.earlyparrot.com/api/campaigns/{}/subscribe'.format(campaign_id)
+        url = settings.REFERRAL_EARLY_PARROT_BASE_API.format(campaign_id)
 
         data = {
             'firstName': kwargs.get('firstName'),

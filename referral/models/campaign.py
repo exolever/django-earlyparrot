@@ -1,11 +1,11 @@
 from django.db import models
 
-from .conf import settings
-from .tasks import CampaignSubscribeTask
+from ..conf import settings
+from ..tasks import CampaignSubscribeTask
+from .subscriber import Subscriber
 
 
 class Campaign(models.Model):
-
     campaign_id = models.CharField(max_length=255)
     status = models.CharField(
         max_length=1,
@@ -15,6 +15,7 @@ class Campaign(models.Model):
     name = models.CharField(max_length=255)
     users = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
+        through='referral.Subscriber',
         related_name='referrals',
         verbose_name='user',
         blank=True,
@@ -26,6 +27,12 @@ class Campaign(models.Model):
     @property
     def total_users(self):
         return self.users.count()
+
+    def add_subscriber(self, user):
+        Subscriber.objects.create(
+            user=user,
+            campaign=self
+        )
 
     def subscribe(self, user_from, rh, conversion):
         data = {

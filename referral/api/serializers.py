@@ -5,10 +5,14 @@ from ..models import Campaign
 
 class CampaignSerializer(serializers.ModelSerializer):
     campaignId = serializers.CharField(source='campaign_id')
+    token = serializers.SerializerMethodField()
 
     class Meta:
         model = Campaign
-        fields = ['name', 'campaignId']
+        fields = ['name', 'campaignId', 'token']
+
+    def get_token(self, obj):
+        return obj.subscriber_set.get(user=self.context.get('request').user).token
 
 
 class CampaignSubscribeSerializer(serializers.Serializer):

@@ -1,11 +1,14 @@
 sudo: false
 language: python
 cache: pip
-python: 3.6
+python:
+  - "3.7"
+  - "3.6"
 matrix:
   fast_finish: true
 services:
 - postgresql
+- redis-server
 addons:
   sonarcloud:
     organization: openexo
@@ -14,7 +17,6 @@ before_script:
 - psql -c 'create database travis_ci_test;' -U postgres
 script:
 - tox
-- sonar-scanner
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel

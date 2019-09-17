@@ -35,10 +35,10 @@ setup(
     install_requires=[
         'django-appconf',
         'django-model-utils',
-        'psycopg2',
         'djangorestframework',
         'celery',
         'redis',
+        'requests',
     ],
     license="MIT",
     zip_safe=False,
