@@ -3,7 +3,7 @@ from __future__ import unicode_literals, absolute_import
 
 import os
 
-from .celery import app as celery_app   # noqa
+from celery import current_app
 
 
 DEBUG = True
@@ -70,3 +70,6 @@ CELERY_SERVICE_BROKER_URL = os.environ.get(
         REDIS_CELERY_DB
     )
 )
+
+current_app.conf.task_always_eager = True
+current_app.conf.task_eager_propagates = True
