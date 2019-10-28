@@ -29,10 +29,7 @@ class Campaign(models.Model):
         return self.users.count()
 
     def add_subscriber(self, user):
-        Subscriber.objects.create(
-            user=user,
-            campaign=self
-        )
+        Subscriber.objects.get_or_create(user=user, campaign=self)
 
     def subscribe(self, user_from, rh, conversion):
         data = {

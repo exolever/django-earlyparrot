@@ -12,4 +12,6 @@ docs/_build/
 *.log
 *.rdb
 
+.env
+
 *.sublime-*

@@ -37,6 +37,7 @@ setup(
         'django-model-utils',
         'djangorestframework',
         'celery',
+        'psycopg2-binary',
         'redis',
         'requests',
     ],
