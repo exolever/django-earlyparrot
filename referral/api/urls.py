@@ -8,7 +8,7 @@ app_name = 'referral'
 
 router = DefaultRouter()
 
-router.register(r'campaigns', CampaignViewSet, base_name='campaign')
+router.register(r'campaigns', CampaignViewSet, basename='campaign')
 
 urlpatterns = [
     url(r'^webhooks/2XliDq2pdp1szRJ0LR9s2598G/$', RewardAPIView.as_view(), name='reward-awared'),
