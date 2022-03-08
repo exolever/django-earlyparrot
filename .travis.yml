@@ -4,7 +4,6 @@ language: python
 cache: pip
 python:
   - "3.7"
-  - "3.6"
 matrix:
   fast_finish: true
 services:
@@ -21,12 +20,12 @@ script:
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
-  user: marfyl
+  user: __token__
   password:
-    secure: IRf83khHz66djAHeiRf55ctNPR6gkkF+GIJi1kpNx+2nwtus7Azo3ffOQBqP1146FJFColTp7rfTb7Nbdy805UQEYzn0G2b7IXAgjeUVUv1QetDNfHdZxGouI42T6gjHeK3hnptCUFvK0N4x3wJZmjc4KGjSAlxvwtQVQbak55Nlzo1maBebZwWULokLsXpV6TF2hUDE2mZUEIBAK6tgUiGyqScGboTq0WM3i+RUttFTPrHFvIXAwX9JtWFsKIvJbXkRbNl/L9N4Uut8empGRmUPDG1oImYAYdtxxNsJ4G+7Z1jzmqHCaFbEHzLNpQLbDZDV0ewF+XD3okBrX2/Po1+GsQx2lyGjLBWe98AklVPzFrsaxG0E935hTJkyGUZU/6SgjUHnPTy7SHBkWDr5Z72OOX0f8DfxRRlncRhJrLp9qu6dxRrEX9Wrmh4LV3MxuNFtE1aRlwKEBQcc+j3GZOOxrz8hu3OIb0LwBwT9Pu/iMAkcjHFcIvoQcR+LOrG35ZPHZDiRdzM6HDbyUzv0QFcduwu0RTfNOTk521GhGw7bJcvKQihPyfE18G+u/wmdGe3We34t9hIJsDswGKjhzreq2m+B1zPuUCtFkX5hkRZcEaCVzrdwLICQj+t0hjjacN0Agzadlwm5utpRvWT7ka0g7Hw7uu9mMWUsisdrP5Q=
+    secure: eKLDsa8D2rrFCVF81I8EyxXcGcQIpiw3rBMpgIEYjK/Nxah2nMPNfp5wg3/L0yaLbncnNH5F5E8d5ZT/i1OgH+I8bWO/0gdZPkTGzuvrmj1/P9aZ/GkRQEGWdbOvJSrctRhWc7PmoaC4pHqDQFO/6AGAvbigAY9ArWZ07pSAGwGDwFXE6kacTlAYrxadG7fO3u1J9dnt54dOFCOkPUVTM0ufSvJjBQa7FfmE5uwwCSeJZ4elYTzFNg9HwPMWbFs3e3PnIUZj2c91rOLl94Ld3b67ncYtarKoZE+UMGIVQvC9RZvy+5NF2/AegUhuAMS8OQ/nJFOlF8JBEWILv03GUklDRn9X4xVHCUHqkEHSJ5lZ0WSAcePmRROX/xx1E7JS9gNScyuSu63TgzMyqECJe8fUD/wEWnSN+k7f7iaElKRhNv8R5VaQTnaS4v+aHCmZcTYSLW2ayzCSr1Ptjsz7bz5vxwGOjlo6sqRvUk8cNIOJTNCTvsRo3uTi0TWGzhpwuJ8ZVF53wDg81b0kh+dCXVJzHo6I79KOI+dS3syz6E3zI1rKdBv9rSIr6f4kJeV9QnHS/xHAM0/VrgUUugGrnq6CpJF5Y6BhE0MCX90yxFKJlfIPwh7cx4MeTLHcmcoRMI+rqxiKyQgcSTt38vk5P/zvxe93pYwJpNXqWO9l2/c=
   on:
     tags: true
     repo: exolever/django-earlyparrot
-    python: 3.6
+    python: 3.7
 after_success:
 - codecov
