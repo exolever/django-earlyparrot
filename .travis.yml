@@ -3,29 +3,29 @@ dist: xenial
 language: python
 cache: pip
 python:
-  - "3.7"
+  - '3.7'
 matrix:
   fast_finish: true
 services:
-- postgresql
-- redis-server
+  - postgresql
+  - redis-server
 addons:
   sonarcloud:
     organization: openexo
 install: pip install -r requirements_test.txt
 before_script:
-- psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c 'create database travis_ci_test;' -U postgres
 script:
-- tox
+  - tox
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
   user: __token__
   password:
-    secure: ePFUiowj9YVICa1YLLlu9SQ1qjfox/ga+Bz+8V2SK00YQ9UKqTym3UhEeqdsn5u5D+F5zlWx/NquAKbFCuARBI1GOFd5j0LU2npH1W5BXBAismRWAIzvmwb96NDofgBdhuALv+MZ/Stm5xcS3ANebQxWZB73/wPKim8EDE+Dh+uL21UGTKZMY7rxSM6oNYSSTE+/aR4mSTzd0ru+bSqJQYrubqyRblHrR8oN08lcdzzfBikK6ymW85PBQeQZZsjV/bLWS2mL4xMljPdZ+iCix4Eihpn5mCa/3pdy+8CTzhOTwF/49QtayEbTshEjKa3rm08XotlCKBPoVPqZwHzsi6eVpbO5aMA0MC2UEFvFptlvWkWN7tuMCZ9zozykeWi+cmdh3W8Qqi4P7RR02yvzfWRcZDMpBD80PvjL1MhBXBZcSqDzlkOClZNUE2TKKuhu25cF5q7gvsaAy6tJL6juWCMprvY6l9yHOpN7/r+ZrZPm9l+/FTT/ixmMba577H9ONeS9oyqu1kKeYEbKISHygOehe1mvt4Y0rC6AW/75T1u4bl2r9u/qb6kZsb9iG84D0X1w9ybwvGIP366BPiRKbtAE2mW22Pd2/iTSILUOmx58WVUCPqN8f2JyBIKpsEKqWLsmwVBl2zcEE+wDCH1A32vxDu12zD5S7eekByajWoc=
+    secure: lLnPMl0yxfFMhFzUevBUn7A5cQ4upjBzmzj2vZPW9y/NzD0rYS1Ph3XeLIdhSSqqFZeC6rvkoXqiKhFcp3Nm4LLr4+D4YSiQbFdnQS9OhJ+GU5yhQE5Gc8IT/qulpSvY86UP1rnL0AErNh+AL9tdCGyDyBUXpj5/77lokADdGOEGCbbA5DB7wi7/PADTgt7z2j0AS/j45Q+56crr1Y0YoDeUOfoaRZrG05Hwq/nn6by+d99CJdb/KZfCZSQRpJS0EcLMxqcMd5g6VtWeg/01fy6dbfR7vUwlOo8mDxFM0QvKM1v49+5yS9lJ7Z1kddOo4pr5vrq5TaMeFvXns3CQbTy7O/FMF9t6zoZu2WFt4CzAkvfyMeiypJY3p6+UPJ/nYhUoEkOMh4CQY70Sm4UFrPjNHu3rkDsWIidpNq/cUCqXI+ou4iaUrGJAJ3g7vbwS+JnNbT6UZjtx4KevEO64JubS940dpWkeGbaHig9UiJHjFKyvDeGt/518TNMiYaJUR5XZa5Y+wjRTi65InXk+pD+OodU5oL5q2yGWX/n4XySSX1fuWQjFi9eYSNB8iMrqMXkrYRXHbPH45GMjZc8huglit3Wv6NT0aZKoOzCMM/X3m8uRPPRXHff/ozrYImZEpkcVYPM9zg/Yp7pDk5/fAs46CCoHHaUX2Yf+vxQTvbE=
   on:
     tags: true
     repo: exolever/django-earlyparrot
     python: 3.7
 after_success:
-- codecov
+  - codecov
